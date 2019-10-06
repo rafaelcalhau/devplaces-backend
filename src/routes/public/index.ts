@@ -1,5 +1,6 @@
 import { Router } from 'express'
 
+import AuthController from '../../controllers/AuthController'
 import SpotController from '../../controllers/SpotController'
 import UserController from '../../controllers/UserController'
 import UserBookingController from '../../controllers/UserBookingController'
@@ -7,6 +8,9 @@ import UserBookingController from '../../controllers/UserBookingController'
 import uploadMiddleware from '../../middlewares/upload'
 
 export default (routes: Router): void => {
+  routes
+    .post('/authenticate', AuthController.auth)
+
   routes
     .delete('/spots/:id', SpotController.delete)
     .delete('/spots/:spot_id/bookings/:booking_id', UserBookingController.delete)
