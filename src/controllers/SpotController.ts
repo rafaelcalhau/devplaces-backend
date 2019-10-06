@@ -18,7 +18,13 @@ export class SpotController implements BaseControllerInterface {
 
   public async index (req: Request, res: Response): Promise<Response> {
     const { technologies } = req.query
-    const spots = await Spot.find({ technologies }).populate('user')
+    let query = null
+
+    if (technologies) {
+      query = { technologies }
+    }
+
+    const spots = await Spot.find(query).populate('user')
 
     return res.json(spots)
   }
