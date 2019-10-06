@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import helmet from 'helmet'
 import mongoose from 'mongoose'
+import path from 'path'
 
 import routes from './routes'
 class App {
@@ -15,6 +16,7 @@ class App {
 
       this.express = express()
       this.express.disable('x-powered-by')
+      this.express.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')))
       this.express.use(helmet())
 
       this.database()
