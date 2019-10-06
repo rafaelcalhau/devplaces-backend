@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import AuthenticatedRequest from '../interfaces/AuthenticatedRequest'
 import BaseControllerInterface from '../interfaces/BaseControllerInterface'
 import Spot from '../models/Spot'
 import User from '../models/User'
@@ -16,12 +17,14 @@ export class SpotController implements BaseControllerInterface {
     return res.json({ deleted })
   }
 
-  public async index (req: Request, res: Response): Promise<Response> {
+  public async index (req: AuthenticatedRequest, res: Response): Promise<Response> {
     const { technologies } = req.query
-    let query = null
+    const query: any = {
+      user: req.userId
+    }
 
     if (technologies) {
-      query = { technologies }
+      query.technologies = technologies
     }
 
     const spots = await Spot.find(query).populate('user')
