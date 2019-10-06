@@ -2,7 +2,7 @@ import { Application, Router } from 'express'
 import RateLimit from 'express-rate-limit'
 
 import PublicRoutes from './public'
-// import PrivateRoutes from './private'
+import PrivateRoutes from './private'
 
 export default (app: Application): void => {
   const routes = Router()
@@ -13,7 +13,7 @@ export default (app: Application): void => {
   })
 
   PublicRoutes(routes)
-  // PrivateRoutes(routes)
+  PrivateRoutes(routes)
 
   // important if behind a proxy to ensure client IP is passed to req.ip
   // app.enable('trust proxy')
