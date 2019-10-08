@@ -10,7 +10,7 @@ export class AuthController {
 
     return User
       .findOne({ email })
-      .select('_id name +password')
+      .select('_id name email +password')
       .then(async (user: UserInterface) => {
         if (user) {
           const verifier = await bcrypt.compare(password, user.password)
@@ -25,6 +25,7 @@ export class AuthController {
           return res.json({
             id: user.id,
             name: user.name,
+            email: user.email,
             token: await user.generateToken()
           })
         }
