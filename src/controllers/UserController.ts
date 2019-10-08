@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import bcrypt from 'bcrypt'
 import BaseControllerInterface from '../interfaces/BaseControllerInterface'
 import Spot from '../models/Spot'
 import User from '../models/User'
@@ -42,6 +43,11 @@ export class UserController implements BaseControllerInterface {
 
   public async update (req: Request, res: Response): Promise<Response> {
     const { id: _id } = req.params
+
+    if (req.body.password) {
+      req.body.password = await bcrypt.hash(req.body.password, 8)
+    }
+
     const user = await User
       .updateOne({ _id }, { ...req.body })
       .catch(err => res.status(500).json({
