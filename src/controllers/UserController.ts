@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import BaseControllerInterface from '../interfaces/BaseControllerInterface'
+import { DataCreate, DataUpdate } from '../interfaces/UserInterface'
 import Spot from '../models/Spot'
 import User from '../models/User'
 
@@ -31,8 +32,26 @@ export class UserController implements BaseControllerInterface {
   }
 
   public async store (req: Request, res: Response): Promise<Response> {
+    const data = { ...req.body }
+    const userData: DataCreate = {
+      name: '',
+      email: '',
+      password: ''
+    }
+
+    if (!data.name || !data.email || !data.password) {
+      return res.status(500).json({
+        name: 'UnvalidUserData',
+        message: 'The data sent is not expected.'
+      })
+    }
+
+    userData.name = data.name
+    userData.email = data.email
+    userData.password = data.passsord
+
     const user = await User
-      .create(req.body)
+      .create(userData)
       .catch(err => res.status(500).json({
         name: err.name,
         message: err.errmsg ? err.errmsg : 'User[store]: Was not possible to create the User.'
@@ -43,13 +62,28 @@ export class UserController implements BaseControllerInterface {
 
   public async update (req: Request, res: Response): Promise<Response> {
     const { id: _id } = req.params
+    const data = { ...req.body }
+    const userData: DataUpdate = {
+      name: '',
+      email: ''
+    }
 
-    if (req.body.password) {
-      req.body.password = await bcrypt.hash(req.body.password, 8)
+    if (!data.name || !data.email) {
+      return res.status(500).json({
+        name: 'UnvalidUserData',
+        message: 'The data sent is not expected.'
+      })
+    }
+
+    userData.name = data.name
+    userData.email = data.email
+
+    if (data.password) {
+      userData.password = await bcrypt.hash(req.body.password, 8)
     }
 
     const user = await User
-      .updateOne({ _id }, { ...req.body })
+      .updateOne({ _id }, userData)
       .catch(err => res.status(500).json({
         name: err.name,
         message: err.errmsg ? err.errmsg : 'User[update]: Was not possible to update the User.'
