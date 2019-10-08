@@ -1,3 +1,6 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
 # devplaces-backend
 
 This is the backend application for DevPlaces, a small project inspired in Rocketseat OmniStack Week 9
