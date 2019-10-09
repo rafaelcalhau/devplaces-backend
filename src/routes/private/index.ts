@@ -18,7 +18,7 @@ export default (routes: Router): void => {
     .get('/spots/:spot_id/bookings', UserBookingController.index)
     .post('/spots', uploadMiddleware.single('thumbnail'), SpotController.store)
     .post('/spots/:spot_id/bookings', UserBookingController.store)
-    .put('/spots/:id', SpotController.update)
+    .put('/spots/:id', uploadMiddleware.single('thumbnail'), SpotController.update)
     .put('/spots/:spot_id/bookings/:booking_id', UserBookingController.update)
 
   routes
