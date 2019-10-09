@@ -48,7 +48,7 @@ export class UserController implements BaseControllerInterface {
 
     userData.name = data.name
     userData.email = data.email
-    userData.password = data.passsord
+    userData.password = data.password
 
     const user = await User
       .create(userData)
