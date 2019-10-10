@@ -9,8 +9,26 @@ import User from '../models/User'
 export class SpotController implements BaseControllerInterface {
   public async delete (req: Request, res: Response): Promise<Response> {
     const { id: _id } = req.params
+    const { userid } = req.headers
+
+    const spot = await Spot.findOne({ _id, user: userid })
+
+    if (!spot) {
+      return res.status(400).json({ error: 'Spot not found.' })
+    }
+
+    const file = path.resolve(__dirname, '..', '..', 'uploads', spot.thumbnail)
+
     const deleted = await Spot
       .deleteOne({ _id })
+      .then(data => {
+        // eslint-disable-next-line
+        fs.unlink(file, (err) => {
+          if (err) console.log(err)
+        })
+
+        return data
+      })
       .catch(err => res.status(500).json({
         name: err.name,
         message: err.errmsg ? err.errmsg : 'Spot[delete]: Was not possible to delete the Spot.'
@@ -96,11 +114,11 @@ export class SpotController implements BaseControllerInterface {
       .save()
       .then(() => {
         if (currentThumbnail) {
-        // Delete previous thumbnail
+          // Delete previous thumbnail
           const file = path.resolve(__dirname, '..', '..', 'uploads', currentThumbnail)
 
           // eslint-disable-next-line
-        fs.unlink(file, (err) => {
+          fs.unlink(file, (err) => {
             if (err) console.log(err)
           })
         }
