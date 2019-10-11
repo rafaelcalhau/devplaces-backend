@@ -4,6 +4,7 @@ import app from './app'
 
 const { useHTTPS, sslPrivateKey, sslCert } = process.env
 const port = process.env.PORT || 3000
+const portHTTPS = process.env.PORT_HTTPS || 3001
 
 if (useHTTPS === 'true') {
   // eslint-disable-next-line
@@ -14,8 +15,8 @@ if (useHTTPS === 'true') {
   const credentials = { key: privateKey, cert: certificate }
   const httpsServer = https.createServer(credentials, app)
 
-  httpsServer.listen(port, () => {
-    console.log(`Server is running on port ${port} (https)`)
+  httpsServer.listen(portHTTPS, () => {
+    console.log(`Server is running on port ${portHTTPS} (https)`)
   })
 } else {
   app.listen(port, () => {
