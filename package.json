@@ -1,6 +1,6 @@
 {
-  "name": "boilerplate-node-project",
-  "description": "Boilerplate application for Node.js with express, typescript, sucrase, mongoose, authenticated REST API, and implementing security best practices.",
+  "name": "devplaces-backend",
+  "description": "This is the backend application for DevPlaces, a small project inspired in Rocketseat OmniStack Week 9",
   "version": "1.0.0",
   "main": "src/app.ts",
   "scripts": {
