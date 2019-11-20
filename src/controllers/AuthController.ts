@@ -16,7 +16,7 @@ export class AuthController {
           const verifier = await bcrypt.compare(password, user.password)
 
           if (!verifier) {
-            return res.status(500).json({
+            return res.status(401).json({
               name: 'InvalidPassword',
               message: 'Authentication failed.'
             })
@@ -30,7 +30,7 @@ export class AuthController {
           })
         }
       })
-      .catch(err => res.status(500).json({
+      .catch(err => res.status(401).json({
         name: err.name,
         message: err.errmsg ? err.errmsg : 'Authentication failed.'
       }))
