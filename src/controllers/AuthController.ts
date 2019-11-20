@@ -28,6 +28,11 @@ export class AuthController {
             email: user.email,
             token: await user.generateToken()
           })
+        } else {
+          return res.status(401).json({
+            name: 'InvalidEmail',
+            message: 'Authentication failed.'
+          })
         }
       })
       .catch(err => res.status(401).json({
