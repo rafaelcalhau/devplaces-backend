@@ -6,6 +6,11 @@ import BaseControllerInterface from '../interfaces/BaseControllerInterface'
 import Spot from '../models/Spot'
 import User from '../models/User'
 
+type SpotsQuery = {
+  user: string;
+  technologies?: RegExp;
+}
+
 export class SpotController implements BaseControllerInterface {
   public async delete (req: Request, res: Response): Promise<Response> {
     const { id: _id } = req.params
@@ -39,12 +44,12 @@ export class SpotController implements BaseControllerInterface {
 
   public async index (req: AuthenticatedRequest, res: Response): Promise<Response> {
     const { technologies } = req.query
-    const query: any = {
+    const query: SpotsQuery = {
       user: req.userId
     }
 
     if (technologies) {
-      query.technologies = technologies
+      query.technologies = new RegExp(technologies, 'i') //eslint-disable-line
     }
 
     const spots = await Spot.find(query).populate('user')
