@@ -5,6 +5,11 @@ import Booking from '../models/Booking'
 import Spot from '../models/Spot'
 import User from '../models/User'
 
+type BookingQueryFields = {
+  spot?: string;
+  user?: string;
+}
+
 export class UserBookingController implements BaseControllerInterface {
   public async delete (req: Request, res: Response): Promise<Response> {
     const { booking_id: bookingid, spot_id: spotid } = req.params
@@ -30,22 +35,30 @@ export class UserBookingController implements BaseControllerInterface {
   }
 
   public async index (req: Request, res: Response): Promise<Response> {
-    const { userid } = req.params
-    const { spot_id: spotid } = req.params
+    const { spot_id: spotid, userid } = req.params
+    const fields: BookingQueryFields = {}
 
-    const user = await User.findById(userid)
+    if (spotid) {
+      const spot = await Spot.findById(spotid)
 
-    if (!user) {
-      res.status(400).json({ error: 'User does not exists.' })
+      if (!spot) {
+        return res.status(400).json({ error: 'Spot does not exists.' })
+      }
+
+      fields.spot = spotid
     }
 
-    const spot = await Spot.findById(spotid)
+    if (userid) {
+      const user = await User.findById(userid)
 
-    if (!spot) {
-      return res.status(400).json({ error: 'Spot does not exists.' })
+      if (!user) {
+        return res.status(400).json({ error: 'User does not exists.' })
+      }
+
+      fields.user = userid
     }
 
-    const bookings = await Booking.find({ spot: spotid, user: userid })
+    const bookings = await Booking.find(fields)
 
     return res.json(bookings)
   }
