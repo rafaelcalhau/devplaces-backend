@@ -4,8 +4,8 @@ import express from 'express'
 import helmet from 'helmet'
 import mongoose from 'mongoose'
 import path from 'path'
-
 import routes from './routes'
+
 class App {
     public express: express.Application
 
@@ -21,7 +21,6 @@ class App {
 
       this.database()
       this.middlewares()
-      this.routes()
     }
 
     private middlewares (): void {
@@ -37,9 +36,9 @@ class App {
       })
     }
 
-    private routes (): void {
+    initializeRoutes (): void {
       routes(this.express)
     }
 }
 
-export default new App().express
+export default new App()

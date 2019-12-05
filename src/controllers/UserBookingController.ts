@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import BaseControllerInterface from '../interfaces/BaseControllerInterface'
+import { CustomExpressRequest } from '../interfaces'
 
 import Booking from '../models/Booking'
 import Spot from '../models/Spot'
@@ -34,7 +35,7 @@ export class UserBookingController implements BaseControllerInterface {
     return res.json({ deleted })
   }
 
-  public async index (req: Request, res: Response): Promise<Response> {
+  public async index (req: CustomExpressRequest, res: Response): Promise<Response> {
     const { spot_id: spotid, userid } = req.params
     const fields: BookingQueryFields = {}
 
