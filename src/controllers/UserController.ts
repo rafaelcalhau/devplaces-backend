@@ -1,11 +1,22 @@
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
-import BaseControllerInterface from '../interfaces/BaseControllerInterface'
-import { DataCreate, DataUpdate } from '../interfaces/UserInterface'
+
 import Spot from '../models/Spot'
 import User from '../models/User'
 
-export class UserController implements BaseControllerInterface {
+interface DataCreate {
+  email: string;
+  name: string;
+  password: string;
+}
+
+interface DataUpdate {
+  email: string;
+  name: string;
+  password?: string;
+}
+
+export class UserController {
   public async delete (req: Request, res: Response): Promise<Response> {
     const { id: _id } = req.params
     const deleted = await User

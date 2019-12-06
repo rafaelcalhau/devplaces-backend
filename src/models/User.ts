@@ -1,10 +1,10 @@
 import { NextFunction } from 'express'
-import { Schema, model } from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import UserInterface from '../interfaces/UserInterface'
+import { UserInterface } from '../interfaces'
 
-const UserSchema: Schema<UserInterface> = new Schema({
+const UserSchema: Schema = new Schema({
   email: {
     type: String,
     allowNull: false,
@@ -35,4 +35,4 @@ UserSchema.pre<UserInterface>('save', async function (next: NextFunction): Promi
   next()
 })
 
-export default model<UserInterface>('User', UserSchema)
+export default mongoose.model<UserInterface>('User', UserSchema)

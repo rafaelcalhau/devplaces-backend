@@ -1,8 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { Request, Response } from 'express'
-import AuthenticatedRequest from '../interfaces/AuthenticatedRequest'
-import BaseControllerInterface from '../interfaces/BaseControllerInterface'
+import { AuthenticatedRequest } from '../interfaces'
 import Spot from '../models/Spot'
 import User from '../models/User'
 
@@ -11,7 +10,7 @@ type SpotsQuery = {
   technologies?: RegExp;
 }
 
-export class SpotController implements BaseControllerInterface {
+export class SpotController {
   public async delete (req: Request, res: Response): Promise<Response> {
     const { id: _id } = req.params
     const { userid } = req.headers

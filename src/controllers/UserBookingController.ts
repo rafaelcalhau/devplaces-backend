@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
-import BaseControllerInterface from '../interfaces/BaseControllerInterface'
-import { CustomExpressRequest } from '../interfaces'
 
+import { CustomExpressRequest } from '../interfaces'
 import Booking from '../models/Booking'
 import Spot from '../models/Spot'
 import User from '../models/User'
@@ -11,7 +10,7 @@ type BookingQueryFields = {
   user?: string;
 }
 
-export class UserBookingController implements BaseControllerInterface {
+export class UserBookingController {
   public async delete (req: Request, res: Response): Promise<Response> {
     const { booking_id: bookingid, spot_id: spotid } = req.params
 
@@ -64,7 +63,7 @@ export class UserBookingController implements BaseControllerInterface {
     return res.json(bookings)
   }
 
-  public async store (req: Request, res: Response): Promise<Response> {
+  public async store (req: CustomExpressRequest, res: Response): Promise<Response> {
     const { userid } = req.headers
     const { spot_id: spotid } = req.params
     const { date } = req.body
@@ -86,6 +85,12 @@ export class UserBookingController implements BaseControllerInterface {
         date,
         spot: spotid,
         user: userid
+      })
+      .then(async doc => {
+        const book = await doc.populate('spot').populate('user').execPopulate()
+        const socketOwner = req.connectedUsers[book.spot.user]
+
+        req.io.to(socketOwner).emit('booking_request', book)
       })
       .catch(err => res.status(500).json({
         name: err.name,

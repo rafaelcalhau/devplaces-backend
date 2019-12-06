@@ -43,9 +43,9 @@ const connectedUsers: any = {} //eslint-disable-line
 
 io.on('connection', socket => {
   const { userId } = socket.handshake.query
-  console.log('A user has been connected! Socket:', socket.id)
-
   connectedUsers[userId] = socket.id //eslint-disable-line
+
+  console.log('User connected: ', socket.id)
 })
 
 server.use((req: CustomExpressRequest, res, next) => {

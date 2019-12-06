@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 
 import User from '../models/User'
-import UserInterface from '../interfaces/UserInterface'
+import { UserInterface } from '../interfaces'
 
 export class AuthController {
   public async auth (req: Request, res: Response): Promise<Response> {

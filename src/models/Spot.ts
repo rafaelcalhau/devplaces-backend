@@ -1,7 +1,7 @@
-import { Schema, model } from 'mongoose'
-import SpotInterface from '../interfaces/SpotInterface'
+import mongoose, { Schema } from 'mongoose'
+import { SpotInterface } from '../interfaces'
 
-const SpotSchema: Schema<SpotInterface> = new Schema({
+const SpotSchema: Schema = new Schema({
   thumbnail: {
     type: String,
     allowNull: false
@@ -24,4 +24,4 @@ const SpotSchema: Schema<SpotInterface> = new Schema({
   timestamps: true
 })
 
-export default model<SpotInterface>('Spot', SpotSchema)
+export default mongoose.model<SpotInterface>('Spot', SpotSchema)
