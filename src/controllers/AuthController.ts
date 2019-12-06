@@ -4,8 +4,8 @@ import bcrypt from 'bcrypt'
 import User from '../models/User'
 import { UserInterface } from '../interfaces'
 
-export class AuthController {
-  public async auth (req: Request, res: Response): Promise<Response> {
+export default {
+  auth: async (req: Request, res: Response): Promise<Response> => {
     const { email, password } = req.body
 
     return User
@@ -41,5 +41,3 @@ export class AuthController {
       }))
   }
 }
-
-export default new AuthController()

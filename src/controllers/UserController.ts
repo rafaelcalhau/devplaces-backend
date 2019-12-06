@@ -16,8 +16,8 @@ interface DataUpdate {
   password?: string;
 }
 
-export class UserController {
-  public async delete (req: Request, res: Response): Promise<Response> {
+export default {
+  delete: async (req: Request, res: Response): Promise<Response> => {
     const { id: _id } = req.params
     const deleted = await User
       .deleteOne({ _id })
@@ -27,22 +27,19 @@ export class UserController {
       }))
 
     return res.json({ deleted })
-  }
-
-  public async index (req: Request, res: Response): Promise<Response> {
+  },
+  index: async (req: Request, res: Response): Promise<Response> => {
     const users = await User.find()
 
     return res.json(users)
-  }
-
-  public async spots (req: Request, res: Response): Promise<Response> {
+  },
+  spots: async (req: Request, res: Response): Promise<Response> => {
     const { id: user } = req.params
     const spots = await Spot.find({ user })
 
     return res.json(spots)
-  }
-
-  public async store (req: Request, res: Response): Promise<Response> {
+  },
+  store: async (req: Request, res: Response): Promise<Response> => {
     const data = { ...req.body }
     const userData: DataCreate = {
       name: '',
@@ -69,9 +66,8 @@ export class UserController {
       }))
 
     return res.json(user)
-  }
-
-  public async update (req: Request, res: Response): Promise<Response> {
+  },
+  update: async (req: Request, res: Response): Promise<Response> => {
     const { id: _id } = req.params
     const data = { ...req.body }
     const userData: DataUpdate = {
@@ -103,5 +99,3 @@ export class UserController {
     return res.json(user)
   }
 }
-
-export default new UserController()

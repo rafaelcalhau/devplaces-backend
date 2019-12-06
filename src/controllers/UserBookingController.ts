@@ -10,8 +10,8 @@ type BookingQueryFields = {
   user?: string;
 }
 
-export class UserBookingController {
-  public async delete (req: Request, res: Response): Promise<Response> {
+export default {
+  delete: async (req: Request, res: Response): Promise<Response> => {
     const { booking_id: bookingid, spot_id: spotid } = req.params
 
     const spot = await Spot.findById(spotid)
@@ -32,9 +32,8 @@ export class UserBookingController {
       }))
 
     return res.json({ deleted })
-  }
-
-  public async index (req: CustomExpressRequest, res: Response): Promise<Response> {
+  },
+  index: async (req: CustomExpressRequest, res: Response): Promise<Response> => {
     const { spot_id: spotid, userid } = req.params
     const fields: BookingQueryFields = {}
 
@@ -61,9 +60,8 @@ export class UserBookingController {
     const bookings = await Booking.find(fields)
 
     return res.json(bookings)
-  }
-
-  public async store (req: CustomExpressRequest, res: Response): Promise<Response> {
+  },
+  store: async (req: CustomExpressRequest, res: Response): Promise<Response> => {
     const { userid } = req.headers
     const { spot_id: spotid } = req.params
     const { date } = req.body
@@ -98,9 +96,8 @@ export class UserBookingController {
       }))
 
     return res.json(booking)
-  }
-
-  public async update (req: Request, res: Response): Promise<Response> {
+  },
+  update: async (req: Request, res: Response): Promise<Response> => {
     const { userid } = req.headers
     const { booking_id: bookingid, spot_id: spotid } = req.params
     const { approved } = req.body
@@ -127,5 +124,3 @@ export class UserBookingController {
     return res.json(booking)
   }
 }
-
-export default new UserBookingController()
