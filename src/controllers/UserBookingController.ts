@@ -1,14 +1,9 @@
 import { Request, Response } from 'express'
 
-import { CustomExpressRequest } from '../interfaces'
+import { BookingQueryFields, CustomExpressRequest } from '../interfaces'
 import Booking from '../models/Booking'
 import Spot from '../models/Spot'
 import User from '../models/User'
-
-type BookingQueryFields = {
-  spot?: string;
-  user?: string;
-}
 
 export default {
   delete: async (req: Request, res: Response): Promise<Response> => {

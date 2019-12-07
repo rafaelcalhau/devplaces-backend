@@ -13,6 +13,11 @@ export declare interface BookingInterface extends Document {
   user: UserInterface['_id'];
 }
 
+export declare type BookingQueryFields = {
+  spot?: string;
+  user?: string;
+}
+
 export declare interface SpotInterface extends Document {
   thumbnail: string;
   company: string;
