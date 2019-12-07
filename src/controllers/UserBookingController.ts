@@ -52,7 +52,7 @@ export default {
       fields.user = userid
     }
 
-    const bookings = await Booking.find(fields).populate('spot')
+    const bookings = await Booking.find(fields).populate('spot').populate('user')
 
     return res.json(bookings)
   },
