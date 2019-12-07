@@ -61,8 +61,6 @@ export default {
       }
     }
 
-    console.log(fields)
-
     const bookings = await Booking.find(fields).populate('spot').populate('user')
 
     return res.json(bookings)
