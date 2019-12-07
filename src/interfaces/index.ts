@@ -14,6 +14,7 @@ export declare interface BookingInterface extends Document {
 }
 
 export declare type BookingQueryFields = {
+  approved?: boolean;
   spot?: string;
   user?: string;
 }

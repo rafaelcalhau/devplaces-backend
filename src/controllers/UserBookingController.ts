@@ -30,6 +30,7 @@ export default {
   },
   index: async (req: CustomExpressRequest, res: Response): Promise<Response> => {
     const { spot_id: spotid, userid } = req.params
+    const { approved } = req.query
     const fields: BookingQueryFields = {}
 
     if (spotid) {
@@ -51,6 +52,16 @@ export default {
 
       fields.user = userid
     }
+
+    if (approved) {
+      if (approved === 'true') {
+        fields.approved = true
+      } else if (approved === 'false') {
+        fields.approved = false
+      }
+    }
+
+    console.log(fields)
 
     const bookings = await Booking.find(fields).populate('spot').populate('user')
 
