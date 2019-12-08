@@ -120,9 +120,13 @@ export default {
       return res.status(400).json({ error: 'Spot does not exists.' })
     }
 
-    await Booking
-      .updateOne({ _id: bookingid }, { approved })
-      .then(doc => res.json({ approved: doc.approved }))
+    return Booking.findOne({ _id: bookingid })
+      .then(async doc => {
+        doc.approved = approved
+
+        await doc.save()
+        return res.json({ approved: doc.approved })
+      })
       .catch(err => res.status(500).json({
         name: err.name,
         message: err.errmsg ? err.errmsg : 'UserBooking[update]: Was not possible to update the Spot.'
