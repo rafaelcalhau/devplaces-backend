@@ -94,7 +94,9 @@ export default {
         const book = await doc.populate('spot').populate('user').execPopulate()
         const socketOwner = req.connectedUsers[book.spot.user]
 
-        req.io.to(socketOwner).emit('booking_request', book)
+        if (socketOwner) {
+          req.io.to(socketOwner).emit('booking_request', book)
+        }
       })
       .catch(err => res.status(500).json({
         name: err.name,
@@ -103,7 +105,7 @@ export default {
 
     return res.json(booking)
   },
-  update: async (req: Request, res: Response): Promise<Response> => {
+  update: async (req: CustomExpressRequest, res: Response): Promise<Response> => {
     const { userid } = req.headers
     const { booking_id: bookingid, spot_id: spotid } = req.params
     const { approved } = req.body
@@ -122,7 +124,19 @@ export default {
 
     return Booking.findOne({ _id: bookingid })
       .then(async doc => {
+        doc.populate('spot').populate('user')
         doc.approved = approved
+
+        const socketOwner = req.connectedUsers[doc.user._id]
+
+        if (socketOwner) {
+          req.io.to(socketOwner).emit('booking_response', {
+            id: bookingid,
+            company: doc.spot.company,
+            date: doc.date,
+            approved
+          })
+        }
 
         await doc.save()
         return res.json({ approved: doc.approved })
