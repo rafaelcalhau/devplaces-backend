@@ -92,7 +92,7 @@ export default {
       })
       .then(async doc => {
         const book = await doc.populate('spot').populate('user').execPopulate()
-        const socketOwner = req.connectedUsers[book.spot.user]
+        const socketOwner = req.connectedUsers.web[book.spot.user]
 
         if (socketOwner) {
           req.io.to(socketOwner).emit('booking_request', book)
@@ -123,23 +123,24 @@ export default {
     }
 
     return Booking.findOne({ _id: bookingid })
-      .then(async doc => {
-        doc.populate('spot').populate('user')
-        doc.approved = approved
+      .populate('spot')
+      .populate('user')
+      .then(async booking => {
+        booking.approved = approved
 
-        const socketOwner = req.connectedUsers[doc.user._id]
+        const socketOwner = req.connectedUsers.mobile[booking.user._id]
 
         if (socketOwner) {
           req.io.to(socketOwner).emit('booking_response', {
             id: bookingid,
-            company: doc.spot.company,
-            date: doc.date,
+            company: booking.spot.company,
+            date: booking.date,
             approved
           })
         }
 
-        await doc.save()
-        return res.json({ approved: doc.approved })
+        await booking.save()
+        return res.json({ approved: booking.approved })
       })
       .catch(err => res.status(500).json({
         name: err.name,

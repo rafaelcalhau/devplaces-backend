@@ -39,11 +39,21 @@ if (useHTTPS === 'true') {
 }
 
 // On production, a good practice is to use Redis for that.
-const connectedUsers: any = {} //eslint-disable-line
+const connectedUsers: any = {
+  mobile: {},
+  web: {}
+}
 
 io.on('connection', socket => {
-  const { userId } = socket.handshake.query
-  connectedUsers[userId] = socket.id //eslint-disable-line
+  const { userId, type } = socket.handshake.query
+
+  if (type === 'mobile') {
+    connectedUsers.mobile[userId] = socket.id //eslint-disable-line
+  } else if (type === 'web') {
+    connectedUsers.web[userId] = socket.id //eslint-disable-line
+  }
+
+  console.log(connectedUsers)
 })
 
 server.use((req: CustomExpressRequest, res, next) => {
