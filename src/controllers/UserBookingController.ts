@@ -58,6 +58,8 @@ export default {
         fields.approved = true
       } else if (approved === 'false') {
         fields.approved = false
+      } else {
+        fields.approved = undefined
       }
     }
 
@@ -118,13 +120,12 @@ export default {
       return res.status(400).json({ error: 'Spot does not exists.' })
     }
 
-    const booking = await Booking
+    await Booking
       .updateOne({ _id: bookingid }, { approved })
+      .then(doc => res.json({ approved: doc.approved }))
       .catch(err => res.status(500).json({
         name: err.name,
         message: err.errmsg ? err.errmsg : 'UserBooking[update]: Was not possible to update the Spot.'
       }))
-
-    return res.json(booking)
   }
 }
