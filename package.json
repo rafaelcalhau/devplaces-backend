@@ -6,6 +6,7 @@
   "scripts": {
     "build": "sucrase ./src -d ./dist --transforms typescript,imports",
     "dev": "nodemon src/server.ts --ignore __tests__",
+    "start": "npm run build && node ./dist/app.js",
     "test": "NODE_ENV=test jest --detectOpenHandles"
   },
   "license": "MIT",
