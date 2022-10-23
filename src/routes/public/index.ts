@@ -1,10 +1,10 @@
 import { Router } from 'express'
 
-import AuthController from '../../controllers/AuthController'
-import UserController from '../../controllers/UserController'
+import AuthController from '@/controllers/AuthController'
+import UserController from '@/controllers/UserController'
 
-export default (routes: Router): void => {
-  routes
+export default (router: Router): void => {
+  router
     .post('/authenticate', AuthController.auth)
     .post('/users', UserController.store)
 }

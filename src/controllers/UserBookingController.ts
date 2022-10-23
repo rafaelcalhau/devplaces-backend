@@ -91,7 +91,8 @@ export default {
         user: userid
       })
       .then(async doc => {
-        const book = await doc.populate('spot').populate('user').execPopulate()
+        await doc.populate('spot')
+        const book = await doc.populate('user')
         const socketOwner = req.connectedUsers.web[book.spot.user]
 
         if (socketOwner) {

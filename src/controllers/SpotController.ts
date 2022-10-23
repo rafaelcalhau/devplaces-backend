@@ -48,7 +48,7 @@ export default {
     }
 
     if (technologies) {
-      query.technologies = new RegExp(technologies, 'i') //eslint-disable-line
+      query.technologies = new RegExp(technologies as string, 'i') //eslint-disable-line
     }
 
     const spots = await Spot.find(query).populate('user')
@@ -70,7 +70,7 @@ export default {
     return Spot
       .create({ company, price, thumbnail, technologies: techs, user: _id })
       .then(async doc => {
-        await doc.populate('user').execPopulate()
+        await doc.populate('user')
         return res.json(doc)
       })
       .catch(err => res.status(500).json({

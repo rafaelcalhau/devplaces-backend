@@ -1,13 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
-import { promisify } from 'util'
-
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
 interface AuthMiddleware extends Request {
     userId?: string | number;
 }
 
-interface JWTVerifyResponse {
+interface JWTVerifyResponse extends JwtPayload {
     id?: string | number;
 }
 
@@ -35,7 +33,7 @@ export default async (req: AuthMiddleware, res: Response, next: NextFunction): P
   const [, token] = authorization.split(' ')
 
   try {
-    const decoded: JWTVerifyResponse = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as JWTVerifyResponse
     req.userId = decoded.id
   } catch (err) {
     return res

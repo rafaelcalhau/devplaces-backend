@@ -1,7 +1,7 @@
 import fs from 'fs'
 import http from 'http'
 import https from 'https'
-import socketio, { Server } from 'socket.io'
+import { Server } from 'socket.io'
 
 import app from './app'
 import { CustomExpressRequest } from './interfaces'
@@ -27,7 +27,7 @@ if (useHTTPS === 'true') {
     console.log(`Server is running on port ${portHTTPS} (https)`)
   })
 
-  io = socketio(httpsServer)
+  io = new Server(httpsServer)
 } else {
   const httpServer = http.createServer(server)
 
@@ -35,10 +35,10 @@ if (useHTTPS === 'true') {
     console.log(`Server is running on port ${port} (http)`)
   })
 
-  io = socketio(httpServer)
+  io = new Server(httpServer)
 }
 
-// On production, a good practice is to use Redis for that.
+// On production, we should use a reliable in-memory storage like Redis to store the connections
 const connectedUsers: any = {
   mobile: {},
   web: {}
@@ -48,9 +48,9 @@ io.on('connection', socket => {
   const { userId, type } = socket.handshake.query
 
   if (type === 'mobile') {
-    connectedUsers.mobile[userId] = socket.id //eslint-disable-line
+    connectedUsers.mobile[userId as string] = socket.id //eslint-disable-line
   } else if (type === 'web') {
-    connectedUsers.web[userId] = socket.id //eslint-disable-line
+    connectedUsers.web[userId as string] = socket.id //eslint-disable-line
   }
 
   console.log(connectedUsers)

@@ -1,6 +1,16 @@
 {
     "compilerOptions": {
+        "sourceMap": false,
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "target": "es2016",
+        "module": "commonjs",
         "esModuleInterop": true,
         "resolveJsonModule": true,
-    }
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+    "include": ["src/**/*"]
 }

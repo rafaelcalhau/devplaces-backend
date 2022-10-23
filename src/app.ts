@@ -29,11 +29,9 @@ class App {
     }
 
     private database (): void {
-      mongoose.connect(process.env.MONGODB_CONNECTION, {
-        useCreateIndex: true,
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
+      mongoose
+        .connect(process.env.MONGODB_URI)
+        .catch(err => console.log(`Connection error: ${err.message}`))
     }
 
     initializeRoutes (): void {

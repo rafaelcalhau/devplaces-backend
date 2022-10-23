@@ -7,11 +7,11 @@ import UserBookingController from '../../controllers/UserBookingController'
 import AuthMiddleware from '../../middlewares/auth'
 import uploadMiddleware from '../../middlewares/upload'
 
-export default (routes: Router): void => {
-  routes
+export default (router: Router): void => {
+  router
     .use(AuthMiddleware)
 
-  routes
+  router
     .delete('/spots/:id', SpotController.delete)
     .delete('/spots/:spot_id/bookings/:booking_id', UserBookingController.delete)
     .get('/spots', SpotController.index)
@@ -19,9 +19,9 @@ export default (routes: Router): void => {
     .post('/spots', uploadMiddleware.single('thumbnail'), SpotController.store)
     .post('/spots/:spot_id/bookings', UserBookingController.store)
     .put('/spots/:id', uploadMiddleware.single('thumbnail'), SpotController.update)
-    .put('/spots/:spot_id/bookings/:booking_id', UserBookingController.update)
+    .patch('/spots/:spot_id/bookings/:booking_id', UserBookingController.update)
 
-  routes
+  router
     .delete('/users/:id', UserController.delete)
     .get('/users', UserController.index)
     .get('/users/:userid/bookings', UserBookingController.index)
