@@ -81,7 +81,7 @@ Run for development:
 
 ```json
 {
-  "userid": string;
+  "userid": "string"
 }
 ```
 
